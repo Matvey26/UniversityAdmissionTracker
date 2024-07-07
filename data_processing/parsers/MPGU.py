@@ -70,13 +70,15 @@ class MPGU(Parser):
             'score': [],
             'original': [],
             'vuz_name': [],
-            'program_name': []
+            'program_name': [],
+            'priority': []
         }
 
         for person in json_table['data']['list_applicants']:
             to_df['snils'].append(person['УникальныйКод'])
             to_df['score'].append(person['СуммаБаллов'])
             to_df['original'].append(person['Оригинал'])
+            to_df['priority'].append(person['Приоритет'])
             to_df['vuz_name'].append(self.vuz_name)
             to_df['program_name'].append(program_name)
 
