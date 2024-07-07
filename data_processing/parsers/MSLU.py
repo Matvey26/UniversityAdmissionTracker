@@ -33,7 +33,7 @@ class MSLU(Parser):
             'snils': [],
             'score': [],
             'original': [],
-            'vuz_name': [],
+            self.vuz_name: [],
             'priority': [],
             'program_name': []
         }
@@ -44,9 +44,9 @@ class MSLU(Parser):
                 continue
             to_df['snils'].append(elements[1])
             to_df['score'].append(elements[2])
-            to_df['original'].append(elements[10])
+            to_df['original'].append(self.vuz_name if elements[10] != 'Нет' else '')
             to_df['priority'].append(elements[11])
-            to_df['vuz_name'].append(self.vuz_name)
+            to_df[self.vuz_name].append(1)
             to_df['program_name'].append(program_name)
             
         return pd.DataFrame(to_df)

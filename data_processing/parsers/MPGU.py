@@ -69,7 +69,7 @@ class MPGU(Parser):
             'snils': [],
             'score': [],
             'original': [],
-            'vuz_name': [],
+            self.vuz_name: [],
             'program_name': [],
             'priority': []
         }
@@ -77,9 +77,9 @@ class MPGU(Parser):
         for person in json_table['data']['list_applicants']:
             to_df['snils'].append(person['УникальныйКод'])
             to_df['score'].append(person['СуммаБаллов'])
-            to_df['original'].append(person['Оригинал'])
+            to_df['original'].append(self.vuz_name if person['Оригинал'] == 'Да' else '')
             to_df['priority'].append(person['Приоритет'])
-            to_df['vuz_name'].append(self.vuz_name)
+            to_df[self.vuz_name].append(1)
             to_df['program_name'].append(program_name)
 
         return pd.DataFrame(to_df)
