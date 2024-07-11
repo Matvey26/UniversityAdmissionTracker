@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 from . import Parser
 
 class MSLU(Parser):
-    def __init__(self, vuz_name: str):
-        super().__init__(vuz_name)
+    def __init__(self, vuz_name: str, short_vuz_name: str):
+        super().__init__(vuz_name, short_vuz_name)
         self.urls = [
             (
                 '39.03.01 Социология',
@@ -43,7 +43,12 @@ class MSLU(Parser):
             if len(elements) != 13:
                 continue
             to_df['snils'].append(elements[1])
-            to_df['score'].append(elements[2])
+            score = elements[2]
+            try:
+                score = int(score)
+            except ValueError:
+                score = 0
+            to_df['score'].append(score)
             to_df['original'].append(self.vuz_name if elements[10] != 'Нет' else '')
             to_df['priority'].append(elements[11])
             to_df[self.vuz_name].append(1)

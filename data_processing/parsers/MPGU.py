@@ -5,8 +5,8 @@ from . import Parser
 
 
 class MPGU(Parser):
-    def __init__(self, vuz_name: str):
-        super().__init__(vuz_name)
+    def __init__(self, vuz_name: str, short_vuz_name: str):
+        super().__init__(vuz_name, short_vuz_name)
 
         # Здесь указываются запросы, с помощью которых можно получать таблицы.
         # Чтобы их получить, откройте меню разработчика в браузере, в нём панель "Сети",
