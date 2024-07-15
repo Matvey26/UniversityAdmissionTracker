@@ -164,3 +164,4 @@ cython_debug/
 /test
 test.*
 data_processing/temp/*
+telegram_bot/config.py
