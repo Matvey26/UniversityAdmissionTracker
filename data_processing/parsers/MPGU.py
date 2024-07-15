@@ -1,10 +1,10 @@
 import requests
 import pandas as pd
 
-from . import Parser
+from . import University
 
 
-class MPGU(Parser):
+class MPGU(University):
     def __init__(self, vuz_name: str, short_vuz_name: str):
         super().__init__(vuz_name, short_vuz_name)
 
@@ -64,31 +64,28 @@ class MPGU(Parser):
             return f"Error: {response.status_code}"
 
     # Преобразует json в формат pandas DataFrame
-    def __get_program_df(self, program_name: str, json_table: dict) -> pd.DataFrame:
+    def __get_program_df(self, json_table: dict) -> pd.DataFrame:
         to_df = {
             'snils': [],
             'score': [],
             'original': [],
-            self.vuz_name: [],
-            'program_name': [],
             'priority': []
         }
 
         for person in json_table['data']['list_applicants']:
             to_df['snils'].append(person['УникальныйКод'])
             to_df['score'].append(person['СуммаБаллов'])
-            to_df['original'].append(self.vuz_name if person['Оригинал'] == 'Да' else '')
+            to_df['original'].append(int(person['Оригинал'] == 'Да'))
             to_df['priority'].append(person['Приоритет'])
-            to_df[self.vuz_name].append(1)
-            to_df['program_name'].append(program_name)
 
         return pd.DataFrame(to_df)
 
     # Собирает данные с таблиц разных напралений в один pandas DataFrame
     def get_table(self):
-        dfs = []
+        dfs = {}
 
         for program_name, url, params in self.urls:
-            dfs.append(self.__get_program_df(program_name, self.__get_program_json(url, params)))
+            js = self.__get_program_json(url, params)
+            dfs[program_name] = self.__get_program_df(js)
 
-        return pd.concat(dfs, ignore_index=True)
+        return dfs
