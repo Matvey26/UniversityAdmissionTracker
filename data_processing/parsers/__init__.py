@@ -1,5 +1,3 @@
-from .Parser import Parser
+from .University import University
 from .MPGU import MPGU
 from .MSLU import MSLU
-from .UNECON import UNECON
-
