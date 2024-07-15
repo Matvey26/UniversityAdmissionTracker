@@ -57,6 +57,6 @@ class MSLU(University):
         dfs = {}
 
         for prog_name, url in self.urls:
-            dfs[prog_name] = self.__get_program_df(prog_name, url)
+            dfs[prog_name] = self.__get_program_df(url)
 
         return dfs

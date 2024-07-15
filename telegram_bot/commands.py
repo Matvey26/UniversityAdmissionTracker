@@ -1,7 +1,7 @@
 import telebot
 from data_processing.TableInterface import TableInterface
 from data_processing.parsers import University
-from .main import bot
+from .main import bot, messages_to_delete
 
 interface = TableInterface()
 
@@ -39,10 +39,16 @@ def hist_cmd_handler(call: telebot.types.CallbackQuery, vuz_name: str):
     paths = interface.save_score_histogram_picture(vuz)
     media = []
     for path in paths:
-        media.append(telebot.types.InputMediaPhoto(open(path, 'rb'), caption=vuz.vuz_name))
+        media.append(telebot.types.InputMediaPhoto(
+            open(path, 'rb'), caption=vuz.vuz_name))
 
-    bot.send_media_group(
-        call.message.chat.id,
-        media,
-        
+    chat_id = call.message.chat.id
+    messages = bot.send_media_group(
+        chat_id,
+        media
     )
+
+    if chat_id not in messages_to_delete:
+        messages_to_delete[chat_id] = []
+    
+    messages_to_delete[chat_id].extend([message.id for message in messages])

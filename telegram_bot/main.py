@@ -1,7 +1,9 @@
 import telebot
+from .config import TOKEN
 
-API_TOKEN = '6126485704:AAHlzWyChNw9ucl_7pkDBB_uuaPsxHf-LfQ'
+API_TOKEN = TOKEN
 bot = telebot.TeleBot(API_TOKEN)
+messages_to_delete = {}
 
 
 @bot.message_handler(commands=['start'])
@@ -60,6 +62,11 @@ def win_command_list(call: telebot.types.CallbackQuery):
 # Обработка кнопок
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call: telebot.types.CallbackQuery):
+    if call.message.chat.id in messages_to_delete:
+        bot.delete_messages(
+            chat_id=call.message.chat.id,
+            message_ids=messages_to_delete[call.message.chat.id]
+        )
     if call.data in commands:
         _, cmd_func = commands[call.data]
         cmd_func(call)
